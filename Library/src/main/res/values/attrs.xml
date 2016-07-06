@@ -1,0 +1,9 @@
+<resources>
+    <declare-styleable name="Pulsator4Droid">
+        <attr name="pulse_count" format="integer"/>
+        <attr name="pulse_duration" format="integer"/>
+        <attr name="pulse_color" format="color"/>
+        <attr name="pulse_repeat" format="integer"/>
+        <attr name="pulse_startFromScratch" format="boolean"/>
+    </declare-styleable>
+</resources>
