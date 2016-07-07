@@ -8,8 +8,15 @@ android:
     - android-24
   licenses:
     - 'android-sdk-license-.+'
+
+jdk: oraclejdk8
+
+sudo: false
+
 before_install:
   - echo "bintray.user=dummy_user" > local.properties
   - echo "bintray.apikey=dummy_api_key" >> local.properties
   - echo "bintray.gpg.password=dummy_password" >> local.properties
-script: ./gradlew clean build
+
+script:
+  - ./gradlew clean build
