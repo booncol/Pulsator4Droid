@@ -1,6 +1,5 @@
 language: android
 sudo: false
-jdk: openjdk7
 android:
   components:
     - build-tools-24.0.0
