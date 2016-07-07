@@ -1,4 +1,4 @@
-package pl.bclogic.pulsator4droid.sampleapplication;
+package pl.bclogic.pulsator4droid.demo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
