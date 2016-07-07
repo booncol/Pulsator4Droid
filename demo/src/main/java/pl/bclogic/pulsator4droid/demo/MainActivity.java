@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         mCountText = (TextView) findViewById(R.id.text_count);
         mDurationText = (TextView) findViewById(R.id.text_duration);
 
-        // count seekbar
+        // count seek bar
         SeekBar countSeek = (SeekBar) findViewById(R.id.seek_count);
         countSeek.setOnSeekBarChangeListener(mCountChangeListener);
         countSeek.setProgress(mPulsator.getCount() - 1);
 
-        // duration seekbar
+        // duration seek bar
         SeekBar durationSeek = (SeekBar) findViewById(R.id.seek_duration);
         durationSeek.setOnSeekBarChangeListener(mDurationChangeListener);
         durationSeek.setProgress(mPulsator.getDuration() / 100);

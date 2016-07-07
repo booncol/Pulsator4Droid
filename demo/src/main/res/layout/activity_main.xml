@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/seek_count"
                 android:layout_centerVertical="true"
-                android:text="@string/label_count"/>
+                android:text="@string/label_count"
+                tools:ignore="RelativeOverlap"/>
             <TextView
                 android:id="@+id/text_count"
                 android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/seek_duration"
                 android:layout_centerVertical="true"
-                android:text="@string/label_duration"/>
+                android:text="@string/label_duration"
+                tools:ignore="RelativeOverlap"/>
             <TextView
                 android:id="@+id/text_duration"
                 android:layout_width="wrap_content"
@@ -84,7 +86,7 @@
             android:layout_height="64dp"
             android:layout_centerInParent="true"
             android:src="@drawable/android_phone"
-            android:contentDescription="@string/image_descripion_android_phone"/>
+            android:contentDescription="@string/image_description_android_phone"/>
 
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
