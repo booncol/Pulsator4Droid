@@ -1,4 +1,4 @@
-Pulsator4Android
+Pulsator4Droid
 ===========
 [![Build Status](https://travis-ci.org/booncol/Pulsator4Droid.svg?branch=master)](https://travis-ci.org/booncol/Pulsator4Droid)
 [ ![Download](https://api.bintray.com/packages/booncol/maven/pulsator4droid/images/download.svg) ](https://bintray.com/booncol/maven/pulsator4droid/_latestVersion)
