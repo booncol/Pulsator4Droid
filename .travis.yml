@@ -1,0 +1,11 @@
+language: android
+sudo: false
+jdk: openjdk7
+android:
+  components:
+    - build-tools-24.0.0
+    - extra-android-support
+    - extra-android-m2repository
+    - android-24
+  licenses:
+    - '.+'
