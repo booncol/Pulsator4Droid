@@ -17,7 +17,7 @@ Pulse animation for Android.
 <dependency>
   <groupId>pl.bclogic</groupId>
   <artifactId>pulsator4droid</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -25,7 +25,7 @@ Pulse animation for Android.
 ##Gradle
 
 ```
-compile 'pl.bclogic:pulsator4droid:1.0.0'
+compile 'pl.bclogic:pulsator4droid:1.0.2'
 ```
 
 ##Usage
