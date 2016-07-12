@@ -39,6 +39,8 @@ public class PulsatorLayout extends RelativeLayout {
     private AnimatorSet mAnimatorSet;
     private Paint mPaint;
     private float mRadius;
+    private float mCenterX;
+    private float mCenterY;
     private boolean mIsStarted;
 
     /**
@@ -200,15 +202,14 @@ public class PulsatorLayout extends RelativeLayout {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        int size = Math.min(width, height);
+        int width = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
+        int height = MeasureSpec.getSize(heightMeasureSpec) - getPaddingTop() - getPaddingBottom();
 
-        mRadius = size * 0.5f;
+        mCenterX = width * 0.5f;
+        mCenterY = height * 0.5f;
+        mRadius = Math.min(width, height) * 0.5f;
 
-        super.onMeasure(
-                MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY));
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**
@@ -298,7 +299,7 @@ public class PulsatorLayout extends RelativeLayout {
 
         @Override
         protected void onDraw(Canvas canvas) {
-            canvas.drawCircle(mRadius, mRadius, mRadius, mPaint);
+            canvas.drawCircle(mCenterX, mCenterY, mRadius, mPaint);
         }
 
     }
