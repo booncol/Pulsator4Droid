@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Pulsator4Droid by booncol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Pulsator4Droid</h1>
+      <h2 class="project-tagline">Pulse animation for Android</h2>
+      <a href="https://github.com/booncol/Pulsator4Droid" class="btn">View on GitHub</a>
+      <a href="https://github.com/booncol/Pulsator4Droid/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/booncol/Pulsator4Droid/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="pulsator4droid" class="anchor" href="#pulsator4droid" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pulsator4Droid</h1>
+
+<p>Pulse animation for Android.</p>
+
+<p><img src="https://raw.githubusercontent.com/booncol/Pulsator4Droid/master/demo.gif" alt="Demo"></p>
+
+<h2>
+<a id="maven" class="anchor" href="#maven" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven</h2>
+
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;pl.bclogic&lt;/groupId&gt;
+  &lt;artifactId&gt;pulsator4droid&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>
+<a id="gradle" class="anchor" href="#gradle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gradle</h2>
+
+<pre><code>compile 'pl.bclogic:pulsator4droid:1.0.0'
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="in-layout" class="anchor" href="#in-layout" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In layout</h3>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">pl</span>.bclogic.pulsator4droid.library.PulsatorLayout
+    <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>@+id/pulsator<span class="pl-pds">"</span></span>
+    <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_width</span>=<span class="pl-s"><span class="pl-pds">"</span>match_parent<span class="pl-pds">"</span></span>
+    <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_height</span>=<span class="pl-s"><span class="pl-pds">"</span>match_parent<span class="pl-pds">"</span></span>
+    <span class="pl-e">app</span><span class="pl-e">:</span><span class="pl-e">pulse_count</span>=<span class="pl-s"><span class="pl-pds">"</span>4<span class="pl-pds">"</span></span>
+    <span class="pl-e">app</span><span class="pl-e">:</span><span class="pl-e">pulse_duration</span>=<span class="pl-s"><span class="pl-pds">"</span>7000<span class="pl-pds">"</span></span>
+    <span class="pl-e">app</span><span class="pl-e">:</span><span class="pl-e">pulse_repeat</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>
+    <span class="pl-e">app</span><span class="pl-e">:</span><span class="pl-e">pulse_color</span>=<span class="pl-s"><span class="pl-pds">"</span>@color/colorAccent<span class="pl-pds">"</span></span>
+    <span class="pl-e">app</span><span class="pl-e">:</span><span class="pl-e">pulse_startFromScratch</span>=<span class="pl-s"><span class="pl-pds">"</span>false<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">pl</span>.bclogic.pulsator4droid.library.PulsatorLayout&gt;</pre></div>
+
+<p>Use following properties</p>
+
+<ul>
+<li>
+<code>pulse_count</code> : Number of pulse circles</li>
+<li>
+<code>pulse_duration</code> : Duration in milliseconds of single pulse</li>
+<li>
+<code>pulse_repeat</code> : Number of pulse repeats. Zero means <code>INFINITE</code>
+</li>
+<li>
+<code>pulse_color</code> : ARGB pulse color</li>
+<li>
+<code>pulse_startFromScratch</code> : Set to true if animation should start from the beginning</li>
+</ul>
+
+<h3>
+<a id="in-activity" class="anchor" href="#in-activity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In activity</h3>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">PulsatorLayout</span> pulsator <span class="pl-k">=</span> (<span class="pl-smi">PulsatorLayout</span>) findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>pulsator);
+pulsator<span class="pl-k">.</span>start();</pre></div>
+
+<h2>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
+
+<p>Try the demo app and change the count and duration parameters in real time.</p>
+
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Author</h2>
+
+<p><strong>Lukasz Majda</strong></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<pre><code>The MIT License (MIT)
+
+Copyright (c) 2016 Lukasz Majda
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/booncol/Pulsator4Droid">Pulsator4Droid</a> is maintained by <a href="https://github.com/booncol">booncol</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
