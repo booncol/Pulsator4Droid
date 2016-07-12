@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/booncol/Pulsator4Droid'
     gitUrl = 'https://github.com/booncol/Pulsator4Droid.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.2'
 
     developerId = 'booncol'
     developerName = 'Lukasz Majda'
@@ -33,7 +33,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.2"
     }
     buildTypes {
         release {
