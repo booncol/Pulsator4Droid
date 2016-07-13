@@ -1,10 +1,9 @@
 Pulsator4Droid
 ===========
+[![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg)](https://android-arsenal.com/api?level=14)
 [![Build Status](https://travis-ci.org/booncol/Pulsator4Droid.svg?branch=master)](https://travis-ci.org/booncol/Pulsator4Droid)
-[ ![Download](https://api.bintray.com/packages/booncol/maven/pulsator4droid/images/download.svg) ](https://bintray.com/booncol/maven/pulsator4droid/_latestVersion)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid/badge.svg)](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Pulsator4Droid-green.svg?style=true)](https://android-arsenal.com/details/1/3873)
-[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](http://mit-license.org)
 [![Twitter](https://img.shields.io/badge/twitter-@booncol-blue.svg?style=flat)](http://twitter.com/booncol)
 
 Pulse animation for Android.
@@ -65,7 +64,11 @@ Try the demo app and change the count and duration parameters in real time.
 
 ##Author
 
-**Lukasz Majda**
+**Lukasz Majda** (lukasz.majda@gmail.com)
+
+![](https://img.shields.io/twitter/follow/booncol.svg?style=social&label=Follow)
+
+Inspired by [iOS Pulsator library](https://github.com/shu223/Pulsator) by **Shuichi Tsutsumi**
 
 
 ##License
