@@ -66,7 +66,7 @@ Try the demo app and change the count and duration parameters in real time.
 
 **Lukasz Majda** (lukasz.majda@gmail.com)
 
-![](https://img.shields.io/twitter/follow/booncol.svg?style=social&label=Follow)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/booncol.svg?style=social&label=Follow%20%40booncol)](https://twitter.com/booncol)
 
 Inspired by [iOS Pulsator library](https://github.com/shu223/Pulsator) by **Shuichi Tsutsumi**
 
