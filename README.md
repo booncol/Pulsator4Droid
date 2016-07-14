@@ -1,6 +1,6 @@
 Pulsator4Droid
 ===========
-[![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg)](https://android-arsenal.com/api?level=14)
+[![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg)](https://android-arsenal.com/api?level=11)
 [![Build Status](https://travis-ci.org/booncol/Pulsator4Droid.svg?branch=master)](https://travis-ci.org/booncol/Pulsator4Droid)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid/badge.svg)](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Pulsator4Droid-green.svg?style=true)](https://android-arsenal.com/details/1/3873)
