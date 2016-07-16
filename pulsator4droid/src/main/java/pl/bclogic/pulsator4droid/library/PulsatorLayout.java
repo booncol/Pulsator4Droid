@@ -28,11 +28,13 @@ public class PulsatorLayout extends RelativeLayout {
     private static final int DEFAULT_COLOR = Color.rgb(0, 116, 193);
     private static final int DEFAULT_DURATION = 7000;
     private static final int DEFAULT_REPEAT = INFINITE;
+    private static final float DEFAULT_MAX_SCALE = 1.f;
     private static final boolean DEFAULT_START_FROM_SCRATCH = true;
 
     private int mCount;
     private int mDuration;
     private int mRepeat;
+    private float mMaxScale;
     private boolean mStartFromScratch;
 
     private final List<View> mViews = new ArrayList<>();
@@ -93,6 +95,7 @@ public class PulsatorLayout extends RelativeLayout {
             mDuration = attr.getInteger(R.styleable.Pulsator4Droid_pulse_duration,
                     DEFAULT_DURATION);
             mRepeat = attr.getInteger(R.styleable.Pulsator4Droid_pulse_repeat, DEFAULT_REPEAT);
+            mMaxScale = attr.getFloat(R.styleable.Pulsator4Droid_pulse_maxScale, DEFAULT_MAX_SCALE);
             mStartFromScratch = attr.getBoolean(R.styleable.Pulsator4Droid_pulse_startFromScratch,
                     DEFAULT_START_FROM_SCRATCH);
             color = attr.getColor(R.styleable.Pulsator4Droid_pulse_color, DEFAULT_COLOR);
@@ -166,6 +169,33 @@ public class PulsatorLayout extends RelativeLayout {
     }
 
     /**
+     * Get number of pulse repeats.
+     *
+     * @return Number of pulse repeats
+     */
+    public int getRepeat() {
+        return mRepeat;
+    }
+
+    /**
+     * Get maximum pulse scale.
+     *
+     * @return Maximum pulse scale
+     */
+    public float getMaxScale() {
+        return mMaxScale;
+    }
+
+    /**
+     * Is animation starting from scratch.
+     *
+     * @return True if starting from scratch, otherwise False
+     */
+    public boolean isStartFromScratch() {
+        return mStartFromScratch;
+    }
+
+    /**
      * Set number of pulses.
      *
      * @param count Number of pulses
@@ -199,6 +229,49 @@ public class PulsatorLayout extends RelativeLayout {
         }
     }
 
+    /**
+     * Set number of pulse repeats.
+     *
+     * @param count Number of pulse repeats
+     */
+    public void setRepeat(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("Number of repeats cannot be negative");
+        }
+
+        if (count != mRepeat) {
+            mRepeat = count;
+            reset();
+            invalidate();
+        }
+    }
+
+    /**
+     * Set maximum pulse scale.
+     *
+     * @param scale Maximum pulse scale
+     */
+    public void setMaxScale(float scale) {
+        if (scale != mMaxScale) {
+            mMaxScale = scale;
+            reset();
+            invalidate();
+        }
+    }
+
+    /**
+     * Set if animation is starting from scratch.
+     *
+     * @param startFromScratch True if animation starting from scratch, False if want to start
+     *                         already animating.
+     */
+    public void setStartFromScratch(boolean startFromScratch) {
+        if (startFromScratch != mStartFromScratch) {
+            mStartFromScratch = startFromScratch;
+            reset();
+            invalidate();
+        }
+    }
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -251,13 +324,15 @@ public class PulsatorLayout extends RelativeLayout {
             long delay = index * mDuration / mCount;
 
             // setup animators
-            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleX", 0f, 1f);
+            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleX", 0f,
+                    mMaxScale);
             scaleXAnimator.setRepeatCount(repeatCount);
             scaleXAnimator.setRepeatMode(ObjectAnimator.RESTART);
             scaleXAnimator.setStartDelay(delay);
             animators.add(scaleXAnimator);
 
-            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleY", 0f, 1f);
+            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleY", 0f,
+                    mMaxScale);
             scaleYAnimator.setRepeatCount(repeatCount);
             scaleYAnimator.setRepeatMode(ObjectAnimator.RESTART);
             scaleYAnimator.setStartDelay(delay);
