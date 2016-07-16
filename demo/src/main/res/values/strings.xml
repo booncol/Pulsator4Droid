@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sample Application</string>
+    <string name="app_name">Pulsator4Droid</string>
     <string name="image_description_android_phone">Android Phone Image</string>
     <string name="label_count">Count</string>
     <string name="label_duration">Duration</string>
