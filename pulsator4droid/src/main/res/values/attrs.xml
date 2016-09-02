@@ -6,5 +6,11 @@
         <attr name="pulse_repeat" format="integer"/>
         <attr name="pulse_maxScale" format="float"/>
         <attr name="pulse_startFromScratch" format="boolean"/>
+        <attr name="pulse_interpolator" format="enum">
+            <enum name="Linear" value="0"/>
+            <enum name="Accelerate" value="1"/>
+            <enum name="Decelerate" value="2"/>
+            <enum name="AccelerateDecelerate" value="3"/>
+        </attr>
     </declare-styleable>
 </resources>

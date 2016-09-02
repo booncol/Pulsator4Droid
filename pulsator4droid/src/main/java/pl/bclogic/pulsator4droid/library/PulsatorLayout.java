@@ -10,6 +10,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
@@ -24,16 +28,24 @@ public class PulsatorLayout extends RelativeLayout {
 
     public static final int INFINITE = 0;
 
+    public static final int INTERP_LINEAR = 0;
+    public static final int INTERP_ACCELERATE = 1;
+    public static final int INTERP_DECELERATE = 2;
+    public static final int INTERP_ACCELERATE_DECELERATE = 3;
+
     private static final int DEFAULT_COUNT = 4;
     private static final int DEFAULT_COLOR = Color.rgb(0, 116, 193);
     private static final int DEFAULT_DURATION = 7000;
     private static final int DEFAULT_REPEAT = INFINITE;
     private static final boolean DEFAULT_START_FROM_SCRATCH = true;
+    private static final int DEFAULT_INTERPOLATOR = INTERP_LINEAR;
 
     private int mCount;
     private int mDuration;
     private int mRepeat;
     private boolean mStartFromScratch;
+    private int mColor;
+    private int mInterpolator;
 
     private final List<View> mViews = new ArrayList<>();
     private AnimatorSet mAnimatorSet;
@@ -42,7 +54,6 @@ public class PulsatorLayout extends RelativeLayout {
     private float mCenterX;
     private float mCenterY;
     private boolean mIsStarted;
-    private int color;
 
     /**
      * Simple constructor to use when creating a view from code.
@@ -86,8 +97,8 @@ public class PulsatorLayout extends RelativeLayout {
         mDuration = DEFAULT_DURATION;
         mRepeat = DEFAULT_REPEAT;
         mStartFromScratch = DEFAULT_START_FROM_SCRATCH;
-
-        color = DEFAULT_COLOR;
+        mColor = DEFAULT_COLOR;
+        mInterpolator = DEFAULT_INTERPOLATOR;
 
         try {
             mCount = attr.getInteger(R.styleable.Pulsator4Droid_pulse_count, DEFAULT_COUNT);
@@ -96,7 +107,9 @@ public class PulsatorLayout extends RelativeLayout {
             mRepeat = attr.getInteger(R.styleable.Pulsator4Droid_pulse_repeat, DEFAULT_REPEAT);
             mStartFromScratch = attr.getBoolean(R.styleable.Pulsator4Droid_pulse_startFromScratch,
                     DEFAULT_START_FROM_SCRATCH);
-            color = attr.getColor(R.styleable.Pulsator4Droid_pulse_color, DEFAULT_COLOR);
+            mColor = attr.getColor(R.styleable.Pulsator4Droid_pulse_color, DEFAULT_COLOR);
+            mInterpolator = attr.getInteger(R.styleable.Pulsator4Droid_pulse_interpolator,
+                    DEFAULT_INTERPOLATOR);
         } finally {
             attr.recycle();
         }
@@ -105,7 +118,7 @@ public class PulsatorLayout extends RelativeLayout {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(color);
+        mPaint.setColor(mColor);
 
         // create views
         build();
@@ -206,7 +219,7 @@ public class PulsatorLayout extends RelativeLayout {
      * @return an integer representation of color
      */
     public int getColor() {
-        return color;
+        return mColor;
     }
 
     /**
@@ -216,9 +229,34 @@ public class PulsatorLayout extends RelativeLayout {
      * @param color : an integer representation of color
      */
     public void setColor(int color) {
-        this.color = color;
-        if(mPaint != null) {
-            mPaint.setColor(color);
+        if (color != mColor) {
+            this.mColor = color;
+
+            if (mPaint != null) {
+                mPaint.setColor(color);
+            }
+        }
+    }
+
+    /**
+     * Get current interpolator type used for animating.
+     *
+     * @return Interpolator type as int
+     */
+    public int getInterpolator() {
+        return mInterpolator;
+    }
+
+    /**
+     * Set current interpolator used for animating.
+     *
+     * @param type Interpolator type as int
+     */
+    public void setInterpolator(int type) {
+        if (type != mInterpolator) {
+            mInterpolator = type;
+            reset();
+            invalidate();
         }
     }
 
@@ -294,7 +332,7 @@ public class PulsatorLayout extends RelativeLayout {
 
         mAnimatorSet = new AnimatorSet();
         mAnimatorSet.playTogether(animators);
-        mAnimatorSet.setInterpolator(new LinearInterpolator());
+        mAnimatorSet.setInterpolator(createInterpolator(mInterpolator));
         mAnimatorSet.setDuration(mDuration);
         mAnimatorSet.addListener(mAnimatorListener);
     }
@@ -310,6 +348,25 @@ public class PulsatorLayout extends RelativeLayout {
 
         if (isStarted) {
             start();
+        }
+    }
+
+    /**
+     * Create interpolator from type.
+     *
+     * @param type Interpolator type as int
+     * @return Interpolator object of type
+     */
+    private static Interpolator createInterpolator(int type) {
+        switch (type) {
+            case INTERP_ACCELERATE:
+                return new AccelerateInterpolator();
+            case INTERP_DECELERATE:
+                return new DecelerateInterpolator();
+            case INTERP_ACCELERATE_DECELERATE:
+                return new AccelerateDecelerateInterpolator();
+            default:
+                return new LinearInterpolator();
         }
     }
 

@@ -78,7 +78,8 @@
         app:pulse_duration="7000"
         app:pulse_repeat="0"
         app:pulse_color="@color/colorAccent"
-        app:pulse_startFromScratch="false">
+        app:pulse_startFromScratch="false"
+        app:pulse_interpolator="Decelerate">
 
         <ImageView
             android:layout_width="64dp"
