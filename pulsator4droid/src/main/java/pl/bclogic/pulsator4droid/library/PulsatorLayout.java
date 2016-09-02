@@ -42,6 +42,7 @@ public class PulsatorLayout extends RelativeLayout {
     private float mCenterX;
     private float mCenterY;
     private boolean mIsStarted;
+    private int color;
 
     /**
      * Simple constructor to use when creating a view from code.
@@ -86,7 +87,7 @@ public class PulsatorLayout extends RelativeLayout {
         mRepeat = DEFAULT_REPEAT;
         mStartFromScratch = DEFAULT_START_FROM_SCRATCH;
 
-        int color = DEFAULT_COLOR;
+        color = DEFAULT_COLOR;
 
         try {
             mCount = attr.getInteger(R.styleable.Pulsator4Droid_pulse_count, DEFAULT_COUNT);
@@ -199,6 +200,27 @@ public class PulsatorLayout extends RelativeLayout {
         }
     }
 
+    /**
+     * Gets the current color of the pulse effect in integer
+     * Defaults to Color.rgb(0, 116, 193);
+     * @return an integer representation of color
+     */
+    public int getColor() {
+        return color;
+    }
+
+    /**
+     * Sets the current color of the pulse effect in integer
+     * Takes effect immediately
+     * Usage: Color.parseColor("<hex-value>") or getResources().getColor(R.color.colorAccent)
+     * @param color : an integer representation of color
+     */
+    public void setColor(int color) {
+        this.color = color;
+        if(mPaint != null) {
+            mPaint.setColor(color);
+        }
+    }
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
