@@ -16,7 +16,7 @@ Pulse animation for Android.
 <dependency>
   <groupId>pl.bclogic</groupId>
   <artifactId>pulsator4droid</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -24,7 +24,7 @@ Pulse animation for Android.
 ##Gradle
 
 ```
-compile 'pl.bclogic:pulsator4droid:1.0.2'
+compile 'pl.bclogic:pulsator4droid:1.0.3'
 ```
 
 ##Usage
@@ -39,7 +39,8 @@ compile 'pl.bclogic:pulsator4droid:1.0.2'
 	app:pulse_duration="7000"
 	app:pulse_repeat="0"
 	app:pulse_color="@color/colorAccent"
-	app:pulse_startFromScratch="false">
+	app:pulse_startFromScratch="false"
+	app:pulse_interpolator="Linear">
 </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 ```
 
@@ -50,6 +51,7 @@ Use following properties
 - `pulse_repeat` : Number of pulse repeats. Zero means `INFINITE`
 - `pulse_color` : ARGB pulse color
 - `pulse_startFromScratch` : Set to true if animation should start from the beginning
+- `pulse_interpolator`: Set interpolator type used for animation. Accepted values are *"Linear"*, *"Accelerate"*, *"Decelerate"*, *"AccelerateDecelerate"*
 
 ###In activity
 
