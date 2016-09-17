@@ -370,6 +370,16 @@ public class PulsatorLayout extends RelativeLayout {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+            mAnimatorSet = null;
+        }
+    }
+
     private class PulseView extends View {
 
         public PulseView(Context context) {
