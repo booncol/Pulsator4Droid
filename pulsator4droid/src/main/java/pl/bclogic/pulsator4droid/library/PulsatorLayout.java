@@ -234,6 +234,8 @@ public class PulsatorLayout extends RelativeLayout {
 
             if (mPaint != null) {
                 mPaint.setColor(color);
+                reset();
+                invalidate();
             }
         }
     }
