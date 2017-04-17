@@ -10,7 +10,7 @@ Pulse animation for Android.
 
 ![](demo.gif)
 
-##Maven
+## Maven
 
 ```
 <dependency>
@@ -21,14 +21,14 @@ Pulse animation for Android.
 </dependency>
 ```
 
-##Gradle
+## Gradle
 
 ```
 compile 'pl.bclogic:pulsator4droid:1.0.3'
 ```
 
-##Usage
-###In layout
+## Usage
+### In layout
 
 ```xml
 <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -53,18 +53,18 @@ Use following properties
 - `pulse_startFromScratch` : Set to true if animation should start from the beginning
 - `pulse_interpolator`: Set interpolator type used for animation. Accepted values are *"Linear"*, *"Accelerate"*, *"Decelerate"*, *"AccelerateDecelerate"*
 
-###In activity
+### In activity
 
 ```java
 PulsatorLayout pulsator = (PulsatorLayout) findViewById(R.id.pulsator);
 pulsator.start();
 ```
 
-##Demo
+## Demo
 
 Try the demo app and change the count and duration parameters in real time.
 
-##Author
+## Author
 
 **Lukasz Majda** (lukasz.majda@gmail.com)
 
@@ -73,7 +73,7 @@ Try the demo app and change the count and duration parameters in real time.
 Inspired by [iOS Pulsator library](https://github.com/shu223/Pulsator) by **Shuichi Tsutsumi**
 
 
-##License
+## License
 
 ```
 The MIT License (MIT)
