@@ -375,8 +375,16 @@ public class PulsatorLayout extends RelativeLayout {
         super.onDetachedFromWindow();
 
         if (mAnimatorSet != null) {
-            mAnimatorSet.cancel();
-            mAnimatorSet = null;
+            stop();
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (mAnimatorSet != null) {
+            start();
         }
     }
 
