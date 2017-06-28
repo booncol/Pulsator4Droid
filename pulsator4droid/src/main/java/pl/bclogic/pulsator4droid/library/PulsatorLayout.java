@@ -54,6 +54,7 @@ public class PulsatorLayout extends RelativeLayout {
     private float mCenterX;
     private float mCenterY;
     private boolean mIsStarted;
+    private boolean mStoppedDueToDetachedFromWindow;
 
     /**
      * Simple constructor to use when creating a view from code.
@@ -375,7 +376,10 @@ public class PulsatorLayout extends RelativeLayout {
         super.onDetachedFromWindow();
 
         if (mAnimatorSet != null) {
-            stop();
+            if (isStarted()) {
+                mStoppedDueToDetachedFromWindow = true;
+                stop();
+            }
         }
     }
 
@@ -384,7 +388,9 @@ public class PulsatorLayout extends RelativeLayout {
         super.onAttachedToWindow();
 
         if (mAnimatorSet != null) {
-            start();
+            if (mStoppedDueToDetachedFromWindow) {
+                start();
+            }
         }
     }
 
