@@ -213,6 +213,25 @@ public class PulsatorLayout extends RelativeLayout {
         }
     }
 
+
+    /**
+     * Set number of pulse repeats
+     * Defaults ot INFINITE
+     */
+    public void setRepeat(int repeat){
+        if (repeat < 0) {
+            throw new IllegalArgumentException("Repeat cannot be negative");
+        }
+
+        if (repeat != mRepeat) {
+            mRepeat = repeat;
+            reset();
+            invalidate();
+        }
+
+    }
+
+
     /**
      * Gets the current color of the pulse effect in integer
      * Defaults to Color.rgb(0, 116, 193);
