@@ -48,6 +48,7 @@ public class PulsatorLayout extends RelativeLayout {
     private int mInterpolator;
 
     private final List<View> mViews = new ArrayList<>();
+    private List<Long> mDelays = new ArrayList<>();
     private AnimatorSet mAnimatorSet;
     private Paint mPaint;
     private float mRadius;
@@ -136,12 +137,10 @@ public class PulsatorLayout extends RelativeLayout {
 
         if (!mStartFromScratch) {
             ArrayList<Animator> animators = mAnimatorSet.getChildAnimations();
-            for (Animator animator : animators) {
+            for (int x = 0; x < animators.size(); x++) {
+                Animator animator = animators.get(x);
                 ObjectAnimator objectAnimator = (ObjectAnimator) animator;
-
-                long delay = objectAnimator.getStartDelay();
-                objectAnimator.setStartDelay(0);
-                objectAnimator.setCurrentPlayTime(mDuration - delay);
+                objectAnimator.setCurrentPlayTime(mDuration - mDelays.get(x));
             }
         }
     }
@@ -314,20 +313,29 @@ public class PulsatorLayout extends RelativeLayout {
             ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleX", 0f, 1f);
             scaleXAnimator.setRepeatCount(repeatCount);
             scaleXAnimator.setRepeatMode(ObjectAnimator.RESTART);
-            scaleXAnimator.setStartDelay(delay);
+            if (mStartFromScratch) {
+                scaleXAnimator.setStartDelay(delay);
+            }
             animators.add(scaleXAnimator);
+            mDelays.add(delay);
 
             ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleY", 0f, 1f);
             scaleYAnimator.setRepeatCount(repeatCount);
             scaleYAnimator.setRepeatMode(ObjectAnimator.RESTART);
-            scaleYAnimator.setStartDelay(delay);
+            if (mStartFromScratch) {
+                scaleYAnimator.setStartDelay(delay);
+            }
             animators.add(scaleYAnimator);
+            mDelays.add(delay);
 
             ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(pulseView, "Alpha", 1f, 0f);
             alphaAnimator.setRepeatCount(repeatCount);
             alphaAnimator.setRepeatMode(ObjectAnimator.RESTART);
-            alphaAnimator.setStartDelay(delay);
+            if (mStartFromScratch) {
+                alphaAnimator.setStartDelay(delay);
+            }
             animators.add(alphaAnimator);
+            mDelays.add(delay);
         }
 
         mAnimatorSet = new AnimatorSet();
