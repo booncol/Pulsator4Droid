@@ -154,13 +154,13 @@ public class PulsatorLayout extends RelativeLayout {
                 // or after starting the animation itself. The truth is, it seems the behavior differs between Android
                 // versions. If it gets called at a wrong time, only some of the animations will start while others will
                 // not or the animated object won't be visible at all.
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1){
+                boolean shouldStartBeforeSettingCurrentTime = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1;
+
+                if(shouldStartBeforeSettingCurrentTime){
                     objectAnimator.start();
                 }
-
                 objectAnimator.setCurrentPlayTime(mDuration - delay);
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1){
+                if(!shouldStartBeforeSettingCurrentTime){
                     objectAnimator.start();
                 }
             } else {
