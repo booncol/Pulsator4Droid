@@ -1,13 +1,13 @@
 Pulsator4Droid
 ===========
 
-###Forked from [booncol/Pulsator4Droid](https://github.com/booncol/Pulsator4Droid)
+### Forked from [booncol/Pulsator4Droid](https://github.com/booncol/Pulsator4Droid)
 
 Pulse animation for Android.
 
 ![](demo.gif)
 
-##How to build
+## How to build
 
 ```bash
 ./gradlew :pulsator4droid:assemble
@@ -19,8 +19,8 @@ implementation fileTree(include: ['*.aar'], dir: 'libs')
 ```
 To your dependencies
 
-##Usage
-###In layout
+## Usage
+### In layout
 
 ```xml
 <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -47,27 +47,25 @@ Use following properties
 - `pulse_minScale`: Initial scale of the pulse
 - `pulse_maxScale`: Final scale of the pulse
 
-###In activity
+### In activity
 
 ```java
 PulsatorLayout pulsator = (PulsatorLayout) findViewById(R.id.pulsator);
 pulsator.start();
 ```
 
-##Demo
+## Demo
 
 Try the demo app and change the count and duration parameters in real time.
 
-##Author
+## Author
 
 **Lukasz Majda** (lukasz.majda@gmail.com)
-
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/booncol.svg?style=social&label=Follow%20%40booncol)](https://twitter.com/booncol)
 
 Inspired by [iOS Pulsator library](https://github.com/shu223/Pulsator) by **Shuichi Tsutsumi**
 
 
-##License
+## License
 
 ```
 The MIT License (MIT)
