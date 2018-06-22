@@ -1,34 +1,26 @@
 Pulsator4Droid
 ===========
-[![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg)](https://android-arsenal.com/api?level=11)
-[![Build Status](https://travis-ci.org/booncol/Pulsator4Droid.svg?branch=master)](https://travis-ci.org/booncol/Pulsator4Droid)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid/badge.svg)](https://maven-badges.herokuapp.com/maven-central/pl.bclogic/pulsator4droid)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Pulsator4Droid-green.svg?style=true)](https://android-arsenal.com/details/1/3873)
-[![Twitter](https://img.shields.io/badge/twitter-@booncol-blue.svg?style=flat)](http://twitter.com/booncol)
+
+### Forked from [booncol/Pulsator4Droid](https://github.com/booncol/Pulsator4Droid)
 
 Pulse animation for Android.
 
 ![](demo.gif)
 
-##Maven
+## How to build
 
+```bash
+./gradlew :pulsator4droid:assemble
 ```
-<dependency>
-  <groupId>pl.bclogic</groupId>
-  <artifactId>pulsator4droid</artifactId>
-  <version>1.0.3</version>
-  <type>pom</type>
-</dependency>
+Generated aar file will be in `pulsator4droid/build/outputs/aar/` folder, copy it to your project's app/libs folder.
+Then add:
+```aidl
+implementation fileTree(include: ['*.aar'], dir: 'libs')
 ```
+To your dependencies
 
-##Gradle
-
-```
-compile 'pl.bclogic:pulsator4droid:1.0.3'
-```
-
-##Usage
-###In layout
+## Usage
+### In layout
 
 ```xml
 <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -52,28 +44,28 @@ Use following properties
 - `pulse_color` : ARGB pulse color
 - `pulse_startFromScratch` : Set to true if animation should start from the beginning
 - `pulse_interpolator`: Set interpolator type used for animation. Accepted values are *"Linear"*, *"Accelerate"*, *"Decelerate"*, *"AccelerateDecelerate"*
+- `pulse_minScale`: Initial scale of the pulse
+- `pulse_maxScale`: Final scale of the pulse
 
-###In activity
+### In activity
 
 ```java
 PulsatorLayout pulsator = (PulsatorLayout) findViewById(R.id.pulsator);
 pulsator.start();
 ```
 
-##Demo
+## Demo
 
 Try the demo app and change the count and duration parameters in real time.
 
-##Author
+## Author
 
 **Lukasz Majda** (lukasz.majda@gmail.com)
-
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/booncol.svg?style=social&label=Follow%20%40booncol)](https://twitter.com/booncol)
 
 Inspired by [iOS Pulsator library](https://github.com/shu223/Pulsator) by **Shuichi Tsutsumi**
 
 
-##License
+## License
 
 ```
 The MIT License (MIT)

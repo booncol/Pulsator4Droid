@@ -4,6 +4,7 @@
         <attr name="pulse_duration" format="integer"/>
         <attr name="pulse_color" format="color"/>
         <attr name="pulse_repeat" format="integer"/>
+        <attr name="pulse_minScale" format="float"/>
         <attr name="pulse_maxScale" format="float"/>
         <attr name="pulse_startFromScratch" format="boolean"/>
         <attr name="pulse_interpolator" format="enum">
