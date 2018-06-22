@@ -1,13 +1,13 @@
 package pl.bclogic.pulsator4droid.library;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -48,7 +48,16 @@ public class PulsatorLayout extends RelativeLayout {
     private int mInterpolator;
 
     private final List<View> mViews = new ArrayList<>();
-    private AnimatorSet mAnimatorSet;
+    /**
+     * {@link android.animation.AnimatorSet} seems to be having issues with
+     * {@link android.animation.ValueAnimator#setCurrentPlayTime(long)} being used for its encapsulated animations. We
+     * have to handle them (start them) manually one by one to avoid that.
+     * More precisely Android versions O and P do not take current play time setting into consideration and play all the
+     * animations at the same timing when started using an {@link android.animation.AnimatorSet}.
+     * <p>
+     * (The play time can be fast-forwarded for the whole set, but not before API 26.)
+     */
+    private List<Animator> mAnimators;
     private Paint mPaint;
     private float mRadius;
     private float mCenterX;
@@ -128,20 +137,34 @@ public class PulsatorLayout extends RelativeLayout {
      * Start pulse animation.
      */
     public synchronized void start() {
-        if (mAnimatorSet == null || mIsStarted) {
+        if (mAnimators == null || mIsStarted) {
             return;
         }
 
-        mAnimatorSet.start();
+        for (int x = 0; x < mAnimators.size(); x++) {
+            ObjectAnimator objectAnimator = (ObjectAnimator) mAnimators.get(x);
 
-        if (!mStartFromScratch) {
-            ArrayList<Animator> animators = mAnimatorSet.getChildAnimations();
-            for (Animator animator : animators) {
-                ObjectAnimator objectAnimator = (ObjectAnimator) animator;
-
+            if (!mStartFromScratch) {
+                // instead of delaying the animation, fast-forward it
                 long delay = objectAnimator.getStartDelay();
                 objectAnimator.setStartDelay(0);
+
+                // This is where it starts to get tricky. The documentation of
+                // ValueAnimator#setCurrentPlayTime(long) is a bit confusing about whether it should be called before
+                // or after starting the animation itself. The truth is, it seems the behavior differs between Android
+                // versions. If it gets called at a wrong time, only some of the animations will start while others will
+                // not or the animated object won't be visible at all.
+                boolean shouldStartBeforeSettingCurrentTime = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1;
+
+                if(shouldStartBeforeSettingCurrentTime){
+                    objectAnimator.start();
+                }
                 objectAnimator.setCurrentPlayTime(mDuration - delay);
+                if(!shouldStartBeforeSettingCurrentTime){
+                    objectAnimator.start();
+                }
+            } else {
+                objectAnimator.start();
             }
         }
     }
@@ -150,15 +173,16 @@ public class PulsatorLayout extends RelativeLayout {
      * Stop pulse animation.
      */
     public synchronized void stop() {
-        if (mAnimatorSet == null || !mIsStarted) {
+        if (mAnimators == null || !mIsStarted) {
             return;
         }
-
-        mAnimatorSet.end();
+        for (Animator animator : mAnimators) {
+            animator.end();
+        }
     }
 
     public synchronized boolean isStarted() {
-        return (mAnimatorSet != null && mIsStarted);
+        return (mAnimators != null && mIsStarted);
     }
 
     /**
@@ -297,7 +321,7 @@ public class PulsatorLayout extends RelativeLayout {
 
         int repeatCount = (mRepeat == INFINITE) ? ObjectAnimator.INFINITE : mRepeat;
 
-        List<Animator> animators = new ArrayList<>();
+        mAnimators = new ArrayList<>(3 * mCount);
         for (int index = 0; index < mCount; index++) {
             // setup view
             PulseView pulseView = new PulseView(getContext());
@@ -312,29 +336,32 @@ public class PulsatorLayout extends RelativeLayout {
 
             // setup animators
             ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleX", 0f, 1f);
-            scaleXAnimator.setRepeatCount(repeatCount);
-            scaleXAnimator.setRepeatMode(ObjectAnimator.RESTART);
             scaleXAnimator.setStartDelay(delay);
-            animators.add(scaleXAnimator);
+            mAnimators.add(scaleXAnimator);
 
             ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleY", 0f, 1f);
-            scaleYAnimator.setRepeatCount(repeatCount);
-            scaleYAnimator.setRepeatMode(ObjectAnimator.RESTART);
             scaleYAnimator.setStartDelay(delay);
-            animators.add(scaleYAnimator);
+            mAnimators.add(scaleYAnimator);
 
             ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(pulseView, "Alpha", 1f, 0f);
-            alphaAnimator.setRepeatCount(repeatCount);
-            alphaAnimator.setRepeatMode(ObjectAnimator.RESTART);
             alphaAnimator.setStartDelay(delay);
-            animators.add(alphaAnimator);
+            mAnimators.add(alphaAnimator);
         }
 
-        mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.playTogether(animators);
-        mAnimatorSet.setInterpolator(createInterpolator(mInterpolator));
-        mAnimatorSet.setDuration(mDuration);
-        mAnimatorSet.addListener(mAnimatorListener);
+        for (Animator animator : mAnimators) {
+            ObjectAnimator objectAnimator = (ObjectAnimator) animator;
+            objectAnimator.setRepeatCount(repeatCount);
+            objectAnimator.setRepeatMode(ObjectAnimator.RESTART);
+            objectAnimator.setInterpolator(createInterpolator(mInterpolator));
+            objectAnimator.setDuration(mDuration);
+        }
+
+        if (mAnimators.isEmpty()) {
+            mAnimators = null;
+        } else {
+            mAnimators.get(0).addListener(mAnimatorStartListener);
+            mAnimators.get(mAnimators.size() - 1).addListener(mAnimatorEndListener);
+        }
     }
 
     /**
@@ -374,9 +401,11 @@ public class PulsatorLayout extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        if (mAnimatorSet != null) {
-            mAnimatorSet.cancel();
-            mAnimatorSet = null;
+        if(mAnimators != null) {
+            for (Animator animator : mAnimators) {
+                animator.cancel();
+            }
+            mAnimators = null;
         }
     }
 
@@ -393,12 +422,39 @@ public class PulsatorLayout extends RelativeLayout {
 
     }
 
-    private final Animator.AnimatorListener mAnimatorListener = new Animator.AnimatorListener() {
+    private class AnimatorSimpleListener implements Animator.AnimatorListener {
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    }
+
+    private final AnimatorSimpleListener mAnimatorStartListener = new AnimatorSimpleListener() {
 
         @Override
         public void onAnimationStart(Animator animator) {
             mIsStarted = true;
         }
+
+    };
+
+    private final AnimatorSimpleListener mAnimatorEndListener = new AnimatorSimpleListener() {
 
         @Override
         public void onAnimationEnd(Animator animator) {
@@ -408,10 +464,6 @@ public class PulsatorLayout extends RelativeLayout {
         @Override
         public void onAnimationCancel(Animator animator) {
             mIsStarted = false;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animator) {
         }
 
     };
