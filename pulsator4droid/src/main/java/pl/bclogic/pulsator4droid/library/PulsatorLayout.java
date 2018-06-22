@@ -16,15 +16,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by booncol on 04.07.2016.
- *
  */
 public class PulsatorLayout extends RelativeLayout {
+
+    private static final String TAG = PulsatorLayout.class.getSimpleName();
+
+    private static final String PROPERTY_SCALE_X = "ScaleX";
+    private static final String PROPERTY_SCALE_Y = "ScaleY";
+    private static final String PROPERTY_ALPHA = "Alpha";
 
     public static final int INFINITE = 0;
 
@@ -33,12 +37,17 @@ public class PulsatorLayout extends RelativeLayout {
     public static final int INTERP_DECELERATE = 2;
     public static final int INTERP_ACCELERATE_DECELERATE = 3;
 
+    private static final float INITIAL_ALPHA = 1f;
+    private static final float END_ALPHA = 0f;
+
     private static final int DEFAULT_COUNT = 4;
     private static final int DEFAULT_COLOR = Color.rgb(0, 116, 193);
     private static final int DEFAULT_DURATION = 7000;
     private static final int DEFAULT_REPEAT = INFINITE;
     private static final boolean DEFAULT_START_FROM_SCRATCH = true;
     private static final int DEFAULT_INTERPOLATOR = INTERP_LINEAR;
+    public static final float DEFAULT_MIN_SCALE = 0.0f;
+    public static final float DEFAULT_MAX_SCALE = 1.0f;
 
     private int mCount;
     private int mDuration;
@@ -46,6 +55,8 @@ public class PulsatorLayout extends RelativeLayout {
     private boolean mStartFromScratch;
     private int mColor;
     private int mInterpolator;
+    private float mMinScale;
+    private float mMaxScale;
 
     private final List<View> mViews = new ArrayList<>();
     /**
@@ -54,7 +65,6 @@ public class PulsatorLayout extends RelativeLayout {
      * have to handle them (start them) manually one by one to avoid that.
      * More precisely Android versions O and P do not take current play time setting into consideration and play all the
      * animations at the same timing when started using an {@link android.animation.AnimatorSet}.
-     * <p>
      * (The play time can be fast-forwarded for the whole set, but not before API 26.)
      */
     private List<Animator> mAnimators;
@@ -79,7 +89,7 @@ public class PulsatorLayout extends RelativeLayout {
      *
      * @param context The Context the view is running in, through which it can access the current
      *                theme, resources, etc.
-     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param attrs   The attributes of the XML tag that is inflating the view.
      */
     public PulsatorLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -88,9 +98,9 @@ public class PulsatorLayout extends RelativeLayout {
     /**
      * Perform inflation from XML and apply a class-specific base style from a theme attribute.
      *
-     * @param context The Context the view is running in, through which it can access the current
-     *                theme, resources, etc.
-     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param context      The Context the view is running in, through which it can access the current
+     *                     theme, resources, etc.
+     * @param attrs        The attributes of the XML tag that is inflating the view.
      * @param defStyleAttr An attribute in the current theme that contains a reference to a style
      *                     resource that supplies default values for the view. Can be 0 to not look
      *                     for defaults.
@@ -108,6 +118,8 @@ public class PulsatorLayout extends RelativeLayout {
         mStartFromScratch = DEFAULT_START_FROM_SCRATCH;
         mColor = DEFAULT_COLOR;
         mInterpolator = DEFAULT_INTERPOLATOR;
+        mMinScale = DEFAULT_MIN_SCALE;
+        mMaxScale = DEFAULT_MAX_SCALE;
 
         try {
             mCount = attr.getInteger(R.styleable.Pulsator4Droid_pulse_count, DEFAULT_COUNT);
@@ -119,6 +131,8 @@ public class PulsatorLayout extends RelativeLayout {
             mColor = attr.getColor(R.styleable.Pulsator4Droid_pulse_color, DEFAULT_COLOR);
             mInterpolator = attr.getInteger(R.styleable.Pulsator4Droid_pulse_interpolator,
                     DEFAULT_INTERPOLATOR);
+            mMinScale = attr.getFloat(R.styleable.Pulsator4Droid_pulse_minScale, DEFAULT_MIN_SCALE);
+            mMaxScale = attr.getFloat(R.styleable.Pulsator4Droid_pulse_maxScale, DEFAULT_MAX_SCALE);
         } finally {
             attr.recycle();
         }
@@ -156,11 +170,11 @@ public class PulsatorLayout extends RelativeLayout {
                 // not or the animated object won't be visible at all.
                 boolean shouldStartBeforeSettingCurrentTime = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1;
 
-                if(shouldStartBeforeSettingCurrentTime){
+                if (shouldStartBeforeSettingCurrentTime) {
                     objectAnimator.start();
                 }
                 objectAnimator.setCurrentPlayTime(mDuration - delay);
-                if(!shouldStartBeforeSettingCurrentTime){
+                if (!shouldStartBeforeSettingCurrentTime) {
                     objectAnimator.start();
                 }
             } else {
@@ -240,6 +254,7 @@ public class PulsatorLayout extends RelativeLayout {
     /**
      * Gets the current color of the pulse effect in integer
      * Defaults to Color.rgb(0, 116, 193);
+     *
      * @return an integer representation of color
      */
     public int getColor() {
@@ -250,6 +265,7 @@ public class PulsatorLayout extends RelativeLayout {
      * Sets the current color of the pulse effect in integer
      * Takes effect immediately
      * Usage: Color.parseColor("<hex-value>") or getResources().getColor(R.color.colorAccent)
+     *
      * @param color : an integer representation of color
      */
     public void setColor(int color) {
@@ -325,9 +341,9 @@ public class PulsatorLayout extends RelativeLayout {
         for (int index = 0; index < mCount; index++) {
             // setup view
             PulseView pulseView = new PulseView(getContext());
-            pulseView.setScaleX(0);
-            pulseView.setScaleY(0);
-            pulseView.setAlpha(1);
+            pulseView.setScaleX(mMinScale);
+            pulseView.setScaleY(mMinScale);
+            pulseView.setAlpha(INITIAL_ALPHA);
 
             addView(pulseView, index, layoutParams);
             mViews.add(pulseView);
@@ -335,15 +351,15 @@ public class PulsatorLayout extends RelativeLayout {
             long delay = index * mDuration / mCount;
 
             // setup animators
-            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleX", 0f, 1f);
+            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(pulseView, PROPERTY_SCALE_X, mMinScale, mMaxScale);
             scaleXAnimator.setStartDelay(delay);
             mAnimators.add(scaleXAnimator);
 
-            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, "ScaleY", 0f, 1f);
+            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(pulseView, PROPERTY_SCALE_Y, mMinScale, mMaxScale);
             scaleYAnimator.setStartDelay(delay);
             mAnimators.add(scaleYAnimator);
 
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(pulseView, "Alpha", 1f, 0f);
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(pulseView, PROPERTY_ALPHA, INITIAL_ALPHA, END_ALPHA);
             alphaAnimator.setStartDelay(delay);
             mAnimators.add(alphaAnimator);
         }
@@ -401,7 +417,7 @@ public class PulsatorLayout extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        if(mAnimators != null) {
+        if (mAnimators != null) {
             for (Animator animator : mAnimators) {
                 animator.cancel();
             }
