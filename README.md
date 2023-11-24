@@ -8,6 +8,8 @@ Pulsator4Droid
 
 Pulse animation for Android.
 
+**> My implementation for Flutter is also available. Take a look at [Pulsator for Flutter](https://github.com/booncol/pulsator).**
+
 ![](demo.gif)
 
 ## Maven
